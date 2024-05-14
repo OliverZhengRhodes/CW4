@@ -4,13 +4,15 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from rdkit import Chem
 from rdkit.Chem import Draw
-molecules = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15",
-             "16","17","18","19","20"]
-molecule_information = {
-    "melting point":"",
-    "boiling point":"",
-    "hazards":"",
-    "uses":""}
+from lib.molecules import *
+#molecules = ["Cobalt Tetrachloride","Toluene","3","4",
+ #            "5","6","7","8","9","10","11","12","13","14","15",
+ #            "16","17","18","19","20"]
+#molecule_information = {
+#    "melting point":"",
+#    "boiling point":"",
+#    "hazards":"",
+#    "uses":""}
 def on_mousewheel(event):
     y_offset = int(-1 * (event.delta / 120))
     canvas_height = molecule_button_canvas.winfo_height()
@@ -19,7 +21,7 @@ def on_mousewheel(event):
     top_boundary = canvas_height
     current_y = molecule_button_canvas.canvasy(0)
     
-    if y_offset < 0:  # Check if scrolling downwards
+    if y_offset < 0:  # Checpip k if scrolling downwards
         if current_y + y_offset >= bottom_boundary:
             molecule_button_canvas.yview_scroll(y_offset, "units")
     else:  # Check if scrolling upwards
@@ -33,18 +35,38 @@ def create_scrollable_buttons(frame):
     buttons = []
     for i in range(20):
         command_func = globals().get(f"button_{i + 1}_command")
-        button = Button(frame, text=f"{molecules[i]}", width=40, height=5, command=command_func)
+        button = Button(frame, text=f"{molecules[i]}",font=("Times", 10),  width=40, height=5, command=command_func)
         button.grid(row=i, column=0, pady=5)
         buttons.append(button)
     return buttons
 
+#test 
+#ammonia
 def button_1_command():
     display_molecule_image("[Co-2](Cl)(Cl)(Cl)Cl")
     display_molecule_information(1)
-
+    name.configure(text = molecules[0])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#aspirin
 def button_2_command():
-    print("Button 2 clicked!")
-
+    display_molecule_image("Cc1ccccc1")
+    display_molecule_information(1)
+    name.configure(text = molecules[1])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#calcium oxide
+def button_3_command():
+    display_molecule_image("[Co-2](Cl)(Cl)(Cl)Cl")
+    display_molecule_information(1)
+    name.configure(text = molecules[0])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#cobalt tetrachloride
+def button_4_command():
+    display_molecule_image("[Co-2](Cl)(Cl)(Cl)Cl")
+    display_molecule_information(1)
+    name.configure(text = molecules[0])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+def display_molecule_information(x):
+    print(x)
 def display_molecule_image(mol_text):
     global molecule_canvas
     
@@ -54,18 +76,21 @@ def display_molecule_image(mol_text):
     # Render the molecule
     img = Draw.MolToImage(mol)
 
+    # Calculate the desired width and height for the molecule canvas
+    canvas_width = 0.6 * molecule_canvas.winfo_screenwidth()  # Adjust as needed
+    canvas_height = 0.8 * molecule_canvas.winfo_screenheight()  # Adjust as needed
+    
     # Resize the image to fit the canvas
-    img = img.resize((molecule_canvas.winfo_width(), molecule_canvas.winfo_height()))
-
+    img = img.resize((int(canvas_width), int(canvas_height)))
+    
     # Convert the PIL image to a Tkinter-compatible format
     photo = ImageTk.PhotoImage(img)
 
     # Display the molecule image on the molecule_canvas
-    molecule_canvas.create_image(0, 0, anchor=tk.NW, image=photo)
+    molecule_canvas.create_image(0, 250, anchor=tk.NW, image=photo)
 
     # Keep a reference to the photo object to prevent it from being garbage collected
     molecule_canvas.photo = photo
-
 
 
 def opening_window():
@@ -94,7 +119,7 @@ def opening_window():
     root.mainloop()
 
 def application_window(root):
-    global molecule_canvas
+    global molecule_canvas, name
     root.destroy()
     application_window = Tk()
     application_window.title("molecular properties")
@@ -135,7 +160,12 @@ def application_window(root):
     molecule_button_canvas.configure(yscrollcommand=scrollbar.set)
     # Bind mousewheel event to the canvas
     molecule_button_canvas.bind_all("<MouseWheel>", on_mousewheel)
-
+    #creating a label that will say the name of the molecule
+    name = Label(
+        text="",
+        font=("Times", 40), fg="purple",
+        bg="grey70", width=30,
+        borderwidth=3, relief="solid")
 
 def go_to_opening_window(root):
     root.destroy()  # Close the opening window
