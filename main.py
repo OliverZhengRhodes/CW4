@@ -5,14 +5,9 @@ from PIL import Image, ImageTk
 from rdkit import Chem
 from rdkit.Chem import Draw
 from lib.molecules import *
-#molecules = ["Cobalt Tetrachloride","Toluene","3","4",
- #            "5","6","7","8","9","10","11","12","13","14","15",
- #            "16","17","18","19","20"]
-#molecule_information = {
-#    "melting point":"",
-#    "boiling point":"",
-#    "hazards":"",
-#    "uses":""}
+
+
+global molecules, data_label
 def on_mousewheel(event):
     y_offset = int(-1 * (event.delta / 120))
     canvas_height = molecule_button_canvas.winfo_height()
@@ -39,34 +34,139 @@ def create_scrollable_buttons(frame):
         button.grid(row=i, column=0, pady=5)
         buttons.append(button)
     return buttons
-
+def button_func(x):
+    print(x)
 #test 
 #ammonia
 def button_1_command():
-    display_molecule_image("[Co-2](Cl)(Cl)(Cl)Cl")
-    display_molecule_information(1)
+    display_molecule_image("[NH3]")
+    display_molecule_information(0)
     name.configure(text = molecules[0])
     name.place(anchor=CENTER, rely=0.05, relx=0.45)
 #aspirin
 def button_2_command():
-    display_molecule_image("Cc1ccccc1")
+    display_molecule_image("O=C(C)Oc1ccccc1C(=O)O")
     display_molecule_information(1)
     name.configure(text = molecules[1])
     name.place(anchor=CENTER, rely=0.05, relx=0.45)
 #calcium oxide
 def button_3_command():
-    display_molecule_image("[Co-2](Cl)(Cl)(Cl)Cl")
-    display_molecule_information(1)
-    name.configure(text = molecules[0])
+    display_molecule_image("[Ca+2].[O-2]")
+    display_molecule_information(2)
+    name.configure(text = molecules[2])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#carbon dioxide
+def button_4_command():
+    display_molecule_image("O=C=O")
+    display_molecule_information(3)
+    name.configure(text = molecules[3])
     name.place(anchor=CENTER, rely=0.05, relx=0.45)
 #cobalt tetrachloride
-def button_4_command():
+def button_5_command():
     display_molecule_image("[Co-2](Cl)(Cl)(Cl)Cl")
-    display_molecule_information(1)
-    name.configure(text = molecules[0])
+    display_molecule_information(4)
+    name.configure(text = molecules[4])
     name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#DDT
+#close Clc1cc(Cl)cc(c1Cl)C(c2cc(Cl)cc(Cl)c2)Cl
+    #still figuring this one 
+def button_6_command():
+    display_molecule_image("ClC1=CC=C(C=C1)C(Cl)(Cl)C(Cl)(Cl)Cl")
+    display_molecule_information(5)
+    name.configure(text = molecules[5])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#ethanol
+def button_7_command():
+    display_molecule_image("CCO")
+    display_molecule_information(6)
+    name.configure(text = molecules[6])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#ethylene
+def button_8_command():
+    display_molecule_image("C=C")
+    display_molecule_information(7)
+    name.configure(text = molecules[7])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#morhpine CN1CCC23C4C1CC5=C2C(=C(C=C5)O)OC3C(C=C4)O looks goofy
+def button_9_command():
+    display_molecule_image("CN1CCC23C4C1CC5=C2C(=C(C=C5)O)OC3C(C=C4)O")
+    display_molecule_information(8)
+    name.configure(text = molecules[8])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#penicilin
+def button_10_command():
+    display_molecule_image("CC1([C@@H](N2[C@@H](S1)[C@@H](C2=O)NC(=O)Cc3ccccc3)C(=O)O)C")
+    display_molecule_information(9)
+    name.configure(text = molecules[9])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#phosphoric acid
+def button_11_command():
+    display_molecule_image("OP(=O)(O)O")
+    display_molecule_information(10)
+    name.configure(text = molecules[10])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#potassium nitrate
+def button_12_command():
+    display_molecule_image("[K+].[N+](=O)([O-])[O-]")
+    display_molecule_information(11)
+    name.configure(text = molecules[11])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#progestin
+def button_13_command():
+    display_molecule_image("CC(C)CCC1C2CCC3C(CCC4=CC(=O)CCC34C)C2CCC1=O")
+    display_molecule_information(12)
+    name.configure(text = molecules[12])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#sodium chloride
+def button_14_command():
+    display_molecule_image("[Cl][Na]")
+    display_molecule_information(13)
+    name.configure(text = molecules[13])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#sodium hydroxide
+def button_15_command():
+    display_molecule_image("[Na][OH]")
+    display_molecule_information(14)
+    name.configure(text = molecules[14])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#sodium stearate
+def button_16_command():
+    display_molecule_image("CCCCCCCCCCCCCCCC(=O)[O-].[Na+]")
+    display_molecule_information(15)
+    name.configure(text = molecules[15])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#silicon dioxide
+def button_17_command():
+    display_molecule_image("O=[Si]=O")
+    display_molecule_information(16)
+    name.configure(text = molecules[16])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#sulfuric acid
+def button_18_command():
+    display_molecule_image("OS(=O)(=O)O")
+    display_molecule_information(17)
+    name.configure(text = molecules[17])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#toluene
+def button_19_command():
+    display_molecule_image("Cc1ccccc1")
+    display_molecule_information(18)
+    name.configure(text = molecules[18])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+#urea
+def button_20_command():
+    display_molecule_image("NC(N)=O")
+    display_molecule_information(19)
+    name.configure(text = molecules[19])
+    name.place(anchor=CENTER, rely=0.05, relx=0.45)
+    
 def display_molecule_information(x):
-    print(x)
+    global data_label
+    data_label.configure(text = (molecule_information["introduction"][x],
+                                 molecule_information["melting point"][x],
+                                 molecule_information["boiling point"][x],
+                                 molecule_information["hazards"][x],
+                                 molecule_information["uses"][x]))
 def display_molecule_image(mol_text):
     global molecule_canvas
     
@@ -119,7 +219,7 @@ def opening_window():
     root.mainloop()
 
 def application_window(root):
-    global molecule_canvas, name
+    global molecule_canvas, name, data_label
     root.destroy()
     application_window = Tk()
     application_window.title("molecular properties")
@@ -166,9 +266,17 @@ def application_window(root):
         font=("Times", 40), fg="purple",
         bg="grey70", width=30,
         borderwidth=3, relief="solid")
+    #creating a label that will say the data of the molecule
+    data_label = Label(
+        text="",
+        font=("Times", 40), fg="purple",
+        bg="grey70", width=13,height = 17,
+        borderwidth=3, relief="solid", anchor = NW)
+    data_label.place(anchor=CENTER, rely=0.50, relx=0.875)
 
 def go_to_opening_window(root):
     root.destroy()  # Close the opening window
     opening_window()
 
 opening_window()
+#add orca generate an input file and dropdown to generate and run calculations eg. coordinates, energies
