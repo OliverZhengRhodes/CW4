@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 from rdkit import Chem
 from rdkit.Chem import Draw
 from lib.molecules import *
-
+from lib.orcatest import *
 
 global molecules, data_label
 def on_mousewheel(event):
@@ -219,7 +219,7 @@ def opening_window():
     root.mainloop()
 
 def application_window(root):
-    global molecule_canvas, name, data_label
+    global molecule_canvas, name, data_label, spe_label
     root.destroy()
     application_window = Tk()
     application_window.title("molecular properties")
@@ -273,7 +273,11 @@ def application_window(root):
         bg="grey70", width=13,height = 17,
         borderwidth=3, relief="solid", anchor = NW)
     data_label.place(anchor=CENTER, rely=0.50, relx=0.875)
-
+    #button that runs the orca
+    orca_button = Button(text="Run Orca Calculations", command=lambda: run_orca_thread(name["text"]),
+                         font=("Helvetica", 31))
+    orca_button.place(x=300, y=win_height * 0.925)
+    
 def go_to_opening_window(root):
     root.destroy()  # Close the opening window
     opening_window()
