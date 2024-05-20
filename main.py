@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 from rdkit import Chem
 from rdkit.Chem import Draw
 from lib.molecules import *
-from lib.orcatest import *
+from lib.orca import *
 
 global molecules, data_label
 def on_mousewheel(event):
