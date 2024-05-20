@@ -1,5 +1,5 @@
 molecules = ["Ammonia", "Aspirin", "Calcium Oxide", "Carbon Dioxide",
-             "Cobalt Tetrachloride", "DDT", "Ethanol", "Ethlyene",
+             "Cobalt Tetrachloride", "DDT", "Ethanol", "Ethylene",
              "Morphine", "Penicilin G", "Phosphoric Acid", "Potassium Nitrate",
              "Progestin", "Sodium Chloride", "Sodium Hydroxide",
              "Sodium Stearate", "Silicon Dioxide", "Sulfuric Acid", "Toluene", "Urea"]
