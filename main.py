@@ -34,8 +34,6 @@ def create_scrollable_buttons(frame):
         button.grid(row=i, column=0, pady=5)
         buttons.append(button)
     return buttons
-def button_func(x):
-    print(x)
 #test 
 #ammonia
 def button_1_command():
@@ -195,9 +193,11 @@ def display_molecule_image(mol_text):
 def read_file(x):
     with open(x,"r") as file:
         text1 = file.read()
-        spe_label.config(text = text1)
-
+        spe_label.configure(text = text1)
+        spe_label.place(x=800, y=win_height * 0.925)
+    
 def opening_window():
+    global win_height
     root = Tk()
     root.title("Opening Window")
     root.attributes("-fullscreen", True)
@@ -294,7 +294,6 @@ def application_window(root):
         bg="grey70", width=55,height = 1,
         font = ("Arial", 15),
         borderwidth=3, relief="solid", anchor = CENTER, justify ="left")
-    spe_label.place(x=800, y=win_height * 0.925)
     #button that runs the orca
     orca_button = Button(text="Run Orca Calculations", command=lambda: run_orca_thread(name["text"]),
                          font=("Helvetica", 31))
