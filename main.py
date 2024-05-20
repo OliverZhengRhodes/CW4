@@ -162,10 +162,10 @@ def button_20_command():
     
 def display_molecule_information(x):
     global data_label
-    data_label.configure(text = (molecule_information["introduction"][x],
-                                 molecule_information["melting point"][x],
-                                 molecule_information["boiling point"][x],
-                                 molecule_information["hazards"][x],
+    data_label.configure(text = ("\u0332".join("Introduction")+"\n"+molecule_information["introduction"][x]+"\n"+"\u0332".join("Melting Point")+"\n"+
+                                 molecule_information["melting point"][x]+u"\u2103"+"\n"+"\u0332".join("Boiling Point")+"\n"+
+                                 molecule_information["boiling point"][x]+u"\u2103"+"\n"+"\u0332".join("Hazards")+"\n"+
+                                 molecule_information["hazards"][x]+"\n"+"\u0332".join("Uses")+"\n"+
                                  molecule_information["uses"][x]))
 def display_molecule_image(mol_text):
     global molecule_canvas
@@ -192,6 +192,10 @@ def display_molecule_image(mol_text):
     # Keep a reference to the photo object to prevent it from being garbage collected
     molecule_canvas.photo = photo
 
+def read_file(x):
+    with open(x,"r") as file:
+        text1 = file.read()
+        spe_label.config(text = text1)
 
 def opening_window():
     root = Tk()
@@ -209,6 +213,13 @@ def opening_window():
         bg="grey70", width=20,
         borderwidth=3, relief="solid")
     title.place(anchor=CENTER, rely=0.1, relx=0.5)
+    #subtext
+    subtext = Label(
+        text="20 Important Chemicals in Science",
+        font=("Times", 20), fg="purple",
+        bg="grey70", width=40,
+        borderwidth=3, relief="solid")
+    subtext.place(anchor=S, rely=0.2, relx=0.5)
     # Button to go to app section
     app_button = Button(text="Enter Application", bg="grey70", font=("Arial", 40),
                         command=lambda: application_window(root))
@@ -240,7 +251,7 @@ def application_window(root):
     molecule_canvas = Canvas(application_window, bg="white",
                              width=round(win_width * 0.6), highlightbackground="black",
                              height=round(win_height))
-    molecule_canvas.place(anchor=N, relx=0.45)
+    molecule_canvas.place(anchor=N, relx=0.45, rely = -0.16)
     # creating the canvas which will hold the scrollable buttons, which
     # will produce the image of the selected molecule
     global molecule_button_canvas
@@ -268,11 +279,22 @@ def application_window(root):
         borderwidth=3, relief="solid")
     #creating a label that will say the data of the molecule
     data_label = Label(
-        text="",
-        font=("Times", 40), fg="purple",
-        bg="grey70", width=13,height = 17,
-        borderwidth=3, relief="solid", anchor = NW)
+        text="", fg="purple",
+        bg="grey70", width=60,height = 70,
+        borderwidth=3, relief="solid", anchor = NW, justify ="left")
     data_label.place(anchor=CENTER, rely=0.50, relx=0.875)
+    #spe
+    #
+    orca_read_button = Button(text="Read Orca", command=lambda: read_file("orca_calc_results.txt"),
+                         font=("Helvetica", 31))
+    orca_read_button.place(x=300, y=win_height * 0.85)
+    #spe display
+    spe_label = Label(
+        text="", fg="purple",
+        bg="grey70", width=55,height = 1,
+        font = ("Arial", 15),
+        borderwidth=3, relief="solid", anchor = CENTER, justify ="left")
+    spe_label.place(x=800, y=win_height * 0.925)
     #button that runs the orca
     orca_button = Button(text="Run Orca Calculations", command=lambda: run_orca_thread(name["text"]),
                          font=("Helvetica", 31))
