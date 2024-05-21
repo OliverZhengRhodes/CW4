@@ -1,11 +1,9 @@
-from tkinter import *
-global molecules
 import tkinter as tk
 from PIL import Image, ImageTk
 from rdkit import Chem
 from rdkit.Chem import Draw
 from lib.molecules import *
-from lib.orca import *
+from lib.orca import * 
 
 global molecules, data_label
 def on_mousewheel(event):
@@ -14,9 +12,10 @@ def on_mousewheel(event):
     frame_height = molecule_button_canvas.bbox("all")[3] - molecule_button_canvas.bbox("all")[1]
     bottom_boundary = 0
     top_boundary = canvas_height
-    current_y = molecule_button_canvas.canvasy(0)
-    
-    if y_offset < 0:  # Checpip k if scrolling downwards
+#gets the current height of the button selection, so that
+#it can detect whether the user can scroll up or whether not
+    current_y = molecule_button_canvas.canvasy(0)   
+    if y_offset < 0:  # Check if scrolling downwards
         if current_y + y_offset >= bottom_boundary:
             molecule_button_canvas.yview_scroll(y_offset, "units")
     else:  # Check if scrolling upwards
@@ -27,14 +26,18 @@ def on_mousewheel(event):
 
 def create_scrollable_buttons(frame):
     global molecules
-    buttons = []
+#creates an empty list called buttons
     for i in range(20):
         command_func = globals().get(f"button_{i + 1}_command")
+#defines the function for each of the buttons as button_no._command
+#all of the buttons through i in range 20 will recieve their own
+#function
         button = Button(frame, text=f"{molecules[i]}",font=("Times", 10),  width=40, height=5, command=command_func)
         button.grid(row=i, column=0, pady=5)
-        buttons.append(button)
-    return buttons
-#test 
+#places the buttons on the same column, so that they are all in line
+#but then places them on different rows with a padding
+#so that the buttons have some spacing between them
+
 #ammonia
 def button_1_command():
     display_molecule_image("[NH3]")
@@ -160,6 +163,11 @@ def button_20_command():
     
 def display_molecule_information(x):
     global data_label
+    #this is the label which will display all of the information for
+    #the currently selected moleule
+    #using the ascii to make certain words underlined and to include
+    #the degree symbol
+    #molecule_information is a dictionary which is in molecules.py
     data_label.configure(text = ("\u0332".join("Introduction")+"\n"+molecule_information["introduction"][x]+"\n"+"\u0332".join("Melting Point")+"\n"+
                                  molecule_information["melting point"][x]+u"\u2103"+"\n"+"\u0332".join("Boiling Point")+"\n"+
                                  molecule_information["boiling point"][x]+u"\u2103"+"\n"+"\u0332".join("Hazards")+"\n"+
@@ -204,6 +212,8 @@ def opening_window():
     root.configure(background="grey34")
     win_width = root.winfo_screenwidth()
     win_height = root.winfo_screenheight()
+    #these sizes will be used as a reference when determining
+    #the size of other labels
     x_size = win_width * 0.3
     y_size = win_height * 0.1
     # Opening text
@@ -213,7 +223,7 @@ def opening_window():
         bg="grey70", width=20,
         borderwidth=3, relief="solid")
     title.place(anchor=CENTER, rely=0.1, relx=0.5)
-    #subtext
+    #subtext title
     subtext = Label(
         text="20 Important Chemicals in Science",
         font=("Times", 20), fg="purple",
@@ -232,6 +242,7 @@ def opening_window():
 def application_window(root):
     global molecule_canvas, name, data_label, spe_label
     root.destroy()
+    #destroys the opening window
     application_window = Tk()
     application_window.title("molecular properties")
     application_window.attributes("-fullscreen", True)
