@@ -1,6 +1,9 @@
 import os
 import subprocess
 import threading
+#this is so that when the run orca calculation button is clicked
+#the program does not freeze as the calculations will be runing
+#on a separate thread
 import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
@@ -10,15 +13,6 @@ def write_to_text_file(name, data, filename):
     print(data)
     with open(filename, 'w') as file:
         file.write(name+" has single point energy: "+data+"J")
-# Define the molecules and their data
-#molecule_information = {
-#    "introduction": ["Ammonia is a compound composed of nitrogen and hydrogen atoms, commonly used in household cleaning products and industrial processes.", "Intro for aspirin", "Intro for calcium oxide", "Intro for carbon dioxide", "Intro for cobalt tetrachloride", "Intro for DDT", "Intro for ethanol", "Intro for ethylene", "Intro for morphine", "Intro for penicillin", "Intro for phosphoric acid", "Intro for potassium nitrate", "Intro for progestin", "Intro for sodium chloride", "Intro for sodium hydroxide", "Intro for sodium stearate", "Intro for silicon dioxide", "Intro for sulfuric acid", "Intro for toluene", "Intro for urea"],
-#    "melting point": ["Melting point for ammonia", "Melting point for aspirin", "Melting point for calcium oxide", "Melting point for carbon dioxide", "Melting point for cobalt tetrachloride", "Melting point for DDT", "Melting point for ethanol", "Melting point for ethylene", "Melting point for morphine", "Melting point for penicillin", "Melting point for phosphoric acid", "Melting point for potassium nitrate", "Melting point for progestin", "Melting point for sodium chloride", "Melting point for sodium hydroxide", "Melting point for sodium stearate", "Melting point for silicon dioxide", "Melting point for sulfuric acid", "Melting point for toluene", "Melting point for urea"],
-#    "boiling point": ["Boiling point for ammonia", "Boiling point for aspirin", "Boiling point for calcium oxide", "Boiling point for carbon dioxide", "Boiling point for cobalt tetrachloride", "Boiling point for DDT", "Boiling point for ethanol", "Boiling point for ethylene", "Boiling point for morphine", "Boiling point for penicillin", "Boiling point for phosphoric acid", "Boiling point for potassium nitrate", "Boiling point for progestin", "Boiling point for sodium chloride", "Boiling point for sodium hydroxide", "Boiling point for sodium stearate", "Boiling point for silicon dioxide", "Boiling point for sulfuric acid", "Boiling point for toluene", "Boiling point for urea"],
-#    "hazards": ["Hazards for ammonia", "Hazards for aspirin", "Hazards for calcium oxide", "Hazards for carbon dioxide", "Hazards for cobalt tetrachloride", "Hazards for DDT", "Hazards for ethanol", "Hazards for ethylene", "Hazards for morphine", "Hazards for penicillin", "Hazards for phosphoric acid", "Hazards for potassium nitrate", "Hazards for progestin", "Hazards for sodium chloride", "Hazards for sodium hydroxide", "Hazards for sodium stearate", "Hazards for silicon dioxide", "Hazards for sulfuric acid", "Hazards for toluene", "Hazards for urea"],
-#    "uses": ["Uses for ammonia", "Uses for aspirin", "Uses for calcium oxide", "Uses for carbon dioxide", "Uses for cobalt tetrachloride", "Uses for DDT", "Uses for ethanol", "Uses for ethylene", "Uses for morphine", "Uses for penicillin", "Uses for phosphoric acid", "Uses for potassium nitrate", "Uses for progestin", "Uses for sodium chloride", "Uses for sodium hydroxide", "Uses for sodium stearate", "Uses for silicon dioxide", "Uses for sulfuric acid", "Uses for toluene", "Uses for urea"]
-#}
-#molecules = ["Ammonia", "Aspirin", "Calcium Oxide", "Carbon Dioxide", "Cobalt Tetrachloride", "DDT", "Ethanol", "Ethylene", "Morphine", "Penicillin G", "Phosphoric Acid", "Potassium Nitrate", "Progestin", "Sodium Chloride", "Sodium Hydroxide", "Sodium Stearate", "Silicon Dioxide", "Sulfuric Acid", "Toluene", "Urea"]
 
 # ORCA calculation functions
 def write_orca_input(molecule, filename):
@@ -31,14 +25,19 @@ def write_orca_input(molecule, filename):
 def run_orca(input_file, output_file):
     try:
         command = f'orca {input_file} > {output_file}'
+        #this is what you would type in command line to produce the
+        #output file from running orca
         result = subprocess.run(command, shell=True, capture_output=True, text=True)
         result.check_returncode()
         print("ORCA execution successful.")
+        #this was useful in testing 
         if result.stderr:
             print("ORCA standard error output:")
+            #this was useful in testing
             print(result.stderr)
     except subprocess.CalledProcessError as e:
         print(f"ORCA failed with error: {e.stderr}")
+        #this was useful in testing
         raise
 
 def extract_energy(output_file):
@@ -46,7 +45,10 @@ def extract_energy(output_file):
     try:
         with open(output_file, 'r') as f:
             for line in f:
+            #reads through every line in the output file
                 if 'FINAL SINGLE POINT ENERGY' in line:
+                    #if it finds "FINAL SINGLE POINT ENERGY" in the output
+                    #file, it takes the float value as energy
                     energy = float(line.split()[4])
                     break
     except FileNotFoundError:
@@ -55,6 +57,7 @@ def extract_energy(output_file):
 
 def orca_calculation(molecule_choice):
     molecules_data = {
+#these are parts of the input files
     'Ammonia': """\
 * xyz 0 1
 N    0.000000    0.000000    0.000000
@@ -293,20 +296,26 @@ H    0.781000    1.571000    0.000000
 }
 
     if molecule_choice not in molecules_data:
+        #this was useful in testing, checking whether the molecule inputted
+        #for the calculations had a inp file ready
         print(f"Invalid molecule choice: {molecule_choice}")
         print(f"Available choices are: {', '.join(molecules_data.keys())}")
+        #this was useful in testing
         return
 
     molecule = molecules_data[molecule_choice]
     input_file = 'molecule.inp'
     output_file = 'molecule.out'
+    #defining what the input and output files were to be called
 
     for file in [input_file, output_file, 'molecule.gbw', 'molecule.opt', 'molecule.hess', 'molecule.prop']:
         if os.path.exists(file):
             os.remove(file)
 
     write_orca_input(molecule, input_file)
-    
+    #I had issues displaying the energy variable onto the tkinter window
+    #the workaround I came up with were to write a statment into another
+    #text file which were to be read in and displayed
     try:
         run_orca(input_file, output_file)
         if os.path.exists(output_file):
@@ -314,20 +323,23 @@ H    0.781000    1.571000    0.000000
             if energy is not None:
                 energy = float(energy)
                 energy = round(energy,4)
+                #rounds the single point energy to 4dp
                 file_name = "orca_calc_results.txt"
+                #this is the name of the text file which contains the statement
                 write_to_text_file(molecule_choice,str(energy),file_name)
                 print(f'The single point energy is: {energy} Eh')
+                #this was useful in testing
             else:
                 print('Failed to extract energy from ORCA output.')
+                #this was useful in testing
         else:
             print(f"ORCA output file {output_file} was not created.")
+            #this was useful in testing
     except Exception as e:
         print(f"An error occurred: {e}")
+        #this was useful in testing
 
 def run_orca_thread(molecule_choice):
     thread = threading.Thread(target=orca_calculation, args=(molecule_choice,))
     thread.start()
-
-def on_calculate_click():
-    selected_molecule = molecule_label.cget("text").lower()
-    run_orca_thread(selected_molecule)
+    #this is what makes the orca calculation run on a separate thread, 
