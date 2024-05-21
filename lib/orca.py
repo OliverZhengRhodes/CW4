@@ -12,7 +12,7 @@ from rdkit.Chem import Draw
 def write_to_text_file(name, data, filename):
     print(data)
     with open(filename, 'w') as file:
-        file.write(name+" has single point energy: "+data+"J")
+        file.write(name+" has single point energy: "+data+"(Eh)")
 
 # ORCA calculation functions
 def write_orca_input(molecule, filename):
