@@ -44,7 +44,7 @@ Upon opening the application the user will be greeted with an opening screen wit
 - Information label on the right, which after clicking a molecule will show information
 - Run orca calculation button, this will allow the user to generate an input file for the currently selected molecule. This molecule will then be optimised and produce an output to generate a single point energy value. **This calculation may take a couple minutes**
 - Read Orca - this will display on screen the single point energy of the last completed orca calculation. **as the calculation may take a few minutes, you will have to wait before pressing this to see the most recent molecule's value**
--Back to menu button - this will take the user back to the opening window
+- Back to menu button - this will take the user back to the opening window
 ### Features
 
 - View the molecular structure of 20 molecules.
